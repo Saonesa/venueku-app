@@ -1,0 +1,37 @@
+# .gitignore for VenueKu_App
+
+# Laravel Backend (venueku-be)
+/venueku-be/.env
+/venueku-be/vendor/
+/venueku-be/node_modules/ # Jika Anda menjalankan npm install di BE
+/venueku-be/public/hot
+/venueku-be/public/storage
+/venueku-be/storage/*.key
+/venueku-be/.idea/
+/venueku-be/.vscode/
+/venueku-be/Homestead.json
+/venueku-be/Homestead.yaml
+/venueku-be/npm-debug.log
+/venueku-be/yarn-error.log
+/venueku-be/mix-manifest.json
+/venueku-be/vite.config.js
+/venueku-be/bootstrap/cache/*.php
+
+# React Frontend (venueku-fe)
+/venueku-fe/node_modules/
+/venueku-fe/dist/
+/venueku-fe/.env
+/venueku-fe/.vite/
+/venueku-fe/.vscode/ # Jika ada
+/venueku-fe/npm-debug.log*
+/venueku-fe/yarn-error.log*
+/venueku-fe/pnpm-debug.log*
+
+# General
+.DS_Store
+.env.*.local
+.phpunit.result.cache
+npm-debug.log
+yarn-debug.log
+.parcel-cache
+.vscode/
