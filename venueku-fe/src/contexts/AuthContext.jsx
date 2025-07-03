@@ -19,13 +19,7 @@ export const AuthProvider = ({ children }) => {
     const isLoggingInRef = useRef(false); // Flag untuk menandakan proses login sedang berlangsung
 
     const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
-        apiKey: "AIzaSyCK9Ip_APSKvHY2iFXjeoxM4nmhoRv9saE",
-        authDomain: "venueku-admin-panel.firebaseapp.com",
-        projectId: "venueku-admin-panel",
-        storageBucket: "venueku-admin-panel.firebasestorage.app",
-        messagingSenderId: "218511265585",
-        appId: "1:218511265585:web:4ed3d220d7705da6a3aa10",
-        measurementId: "G-CS2MH10LZP"
+
     };
 
     const app = initializeApp(firebaseConfig);
