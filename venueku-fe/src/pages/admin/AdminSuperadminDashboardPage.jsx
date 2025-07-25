@@ -1,9 +1,10 @@
-// src/pages/Admin/AdminSuperadminDashboardPage.jsx
-import React, { useState, useEffect, useContext } from 'react';
-import { AuthContext } from '../../contexts/AuthContext'; // Import AuthContext
+// VENUEKU-FE/src/pages/Admin/AdminSuperadminDashboardPage.jsx
+import React, { useState, useEffect } from 'react'; // Hapus useContext
+import { useAuth } from '../../contexts/AuthContext'; // Import useAuth
+import api from '../../services/api'; // Import api instance
 
 function AdminSuperadminDashboardPage() {
-    const { userRole } = useContext(AuthContext); // Dapatkan userRole dari Context
+    const { userRole, loading: authLoading } = useAuth(); // Dapatkan userRole dan loading autentikasi
     const [metrics, setMetrics] = useState({
         totalUsers: 0,
         totalPartners: 0,
@@ -13,41 +14,35 @@ function AdminSuperadminDashboardPage() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Simulasi fetch data khusus Superadmin
         const fetchSuperadminMetrics = async () => {
+            if (authLoading) return; // Tunggu AuthContext selesai loading
+
             if (userRole !== 'superadmin') {
-                setLoading(false);
                 setError('Akses ditolak. Halaman ini hanya untuk Superadmin.');
+                setLoading(false);
                 return;
             }
-            setLoading(true);
-            // Di sini Anda akan memanggil manageUsers dari AuthContext untuk mendapatkan jumlah
-            // atau API backend Sahrul untuk metrik superadmin yang sebenarnya.
-            try {
-                // Simulasi data
-                const dummyUsers = Math.floor(Math.random() * 1000) + 100;
-                const dummyPartners = Math.floor(Math.random() * 100) + 10;
-                const dummyRevenue = Math.floor(Math.random() * 50000) + 10000;
 
-                setMetrics({
-                    totalUsers: dummyUsers,
-                    totalPartners: dummyPartners,
-                    overallRevenue: dummyRevenue,
-                });
-                setLoading(false);
+            setLoading(true);
+            setError(null);
+            try {
+                // <<< PANGGIL API UNTUK METRIK SUPERADMIN >>>
+                const response = await api.get('/superadmin/dashboard-metrics');
+                setMetrics(response.data);
             } catch (err) {
-                setError(err.message);
+                console.error('Gagal mengambil metrik Superadmin:', err.response?.data || err.message);
+                setError(err.response?.data?.message || 'Gagal memuat metrik Superadmin.');
+            } finally {
                 setLoading(false);
             }
         };
 
         fetchSuperadminMetrics();
-    }, [userRole]); // Re-fetch jika userRole berubah
+    }, [userRole, authLoading]); // Re-fetch jika userRole atau authLoading berubah
 
-    if (loading) return <p className="text-center text-xl mt-8">Memuat dashboard Superadmin...</p>;
-    if (error) return <p className="text-center text-red-500 mt-8">{error}</p>;
+    if (loading || authLoading) return <p className="text-center text-xl mt-8">Memuat dashboard Superadmin...</p>;
+    if (error) return <p className="text-center text-red-500 mt-8">Error: {error}</p>;
     if (userRole !== 'superadmin') return <p className="text-center text-red-500 mt-8">Akses Ditolak. Halaman ini hanya untuk Superadmin.</p>;
-
 
     return (
         <div>
@@ -65,7 +60,7 @@ function AdminSuperadminDashboardPage() {
                 </div>
                 <div className="bg-white p-6 rounded-lg shadow-md">
                     <h3 className="text-lg font-semibold text-gray-600">Overall Revenue (All Time)</h3>
-                    <p className="text-3xl font-bold text-gray-800 mt-2">${metrics.overallRevenue.toLocaleString()}</p>
+                    <p className="text-3xl font-bold text-gray-800 mt-2">Rp{metrics.overallRevenue?.toLocaleString('id-ID')}</p> {/* Format mata uang */}
                 </div>
             </div>
 

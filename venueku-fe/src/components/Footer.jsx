@@ -26,8 +26,8 @@ function Footer() {
                     <h4 className="font-semibold text-gray-800 mb-4">PRODUCTS</h4>
                     <ul>
                         <li className="mb-2">
-                            <Link to="/register/admin" className="hover:text-blue-500">
-                                VenueKu Business
+                            <Link to="/venue-listing" className="hover:text-blue-500">
+                                Venue
                             </Link>
                         </li>
                     </ul>
@@ -39,7 +39,7 @@ function Footer() {
                     <ul>
                         <li className="mb-2">
                             <a
-                                href={`https://wa.me/${whatsappNumber}`} // <<< LINK INI DIUBAH KE WHATSAPP
+                                href={`https://wa.me/${whatsappNumber}`} 
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="hover:text-blue-500"

@@ -1,29 +1,26 @@
 // src/pages/VenueFieldTab.jsx
 import React from 'react';
-import { useOutletContext, Link } from 'react-router-dom'; // Import Link
+import { useOutletContext } from 'react-router-dom'; // Hanya perlu useOutletContext di sini
+import FieldCard from '../components/FieldCard'; // PERBAIKAN: Import FieldCard yang sudah ada
 
 function VenueFieldTab() {
-    const { venue } = useOutletContext(); // Mendapatkan data venue dari VenueDetailPage
+    // Menggunakan useOutletContext untuk mendapatkan data venue dari parent Route (VenueDetailPage)
+    const { venue } = useOutletContext();
 
+    // Tampilkan pesan jika tidak ada lapangan
     if (!venue || !venue.fields || venue.fields.length === 0) {
-        return <p className="text-gray-600 text-center mt-4">Tidak ada informasi lapangan yang tersedia.</p>;
+        return (
+            <p className="text-gray-600 text-center mt-8 p-4 bg-white rounded-lg shadow-sm">
+                Tidak ada informasi lapangan yang tersedia untuk venue ini.
+            </p>
+        );
     }
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        // Gunakan layout grid yang sama dengan HomePage untuk konsistensi
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-4">
             {venue.fields.map(field => (
-                <div key={field.id} className="bg-gray-50 rounded-lg shadow-sm p-4">
-                    <img src={field.imageUrl} alt={field.name} className="w-full h-40 object-cover rounded-md mb-4" />
-                    <h3 className="text-xl font-semibold text-gray-800 mb-1">{field.name}</h3>
-                    <p className="text-gray-600 mb-2">{field.type}</p>
-                    <p className="text-gray-700 font-bold mb-4">Rp {field.price.toLocaleString('id-ID')}</p>
-                    <Link // Menggunakan Link untuk navigasi
-                        to={`/venue/${venue.id}/field/${field.id}/schedule`} // Path ke halaman jadwal
-                        className="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 block text-center"
-                    >
-                        LIHAT JADWAL
-                    </Link>
-                </div>
+                <FieldCard key={field.id} field={field} />
             ))}
         </div>
     );
